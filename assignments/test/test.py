@@ -1,17 +1,14 @@
-from controller.person_controller import PersonController
-from datetime import datetime
 
-# print(PersonController.save("ahmad", "messbah"))
-# print(PersonController.edit(1, "ali", "messbah"))
-# print(PersonController.remove(1))
-# print(PersonController.find_all())
-# print(PersonController.find_by_id(10))
-# print(PersonController.find_by_family("messbah1"))
 from assignments.controller import PatientController
 from assignments.model.bl.patient_bl import PatientBl
 from assignments.model.da.da import DataAccess
 # Entity Test
-from assignments.model.entity import *
+from assignments.model.entity.patinet import Paitent
+from assignments.model.entity.doctor import Doctor
+from assignments.model.entity.medical_report import medicalreport
+
+
+
 
 # print(PatientController.save("co", "er"))
 # patient = Patient("aaaa", "bbbb")

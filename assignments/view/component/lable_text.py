@@ -1,4 +1,4 @@
-from tkinter import StringVar, Label,Entry
+ from tkinter import StringVar, Label,Entry
 
 
 class TextWithLabel:

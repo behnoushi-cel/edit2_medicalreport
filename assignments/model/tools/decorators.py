@@ -1,4 +1,4 @@
-from model.tools.logging import Logger
+from assignments.model.tools.logging import Logger
 
 
 def exception_handling(function):
@@ -14,5 +14,4 @@ def exception_handling(function):
             # e.with_traceback()
             Logger.error(f"{function.__qualname__}{args[1:]} [RAISED EXCEPTION] : {e}")
             return False, str(e)
-
     return inner

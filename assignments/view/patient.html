@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Patients and Doctors</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.css') }}">
+</head>
+<body>
+<div class="container">
+    <h2>Patient Profile</h2>
+    <form id="patient-form" action="/patient" method="post" class="form-group">
+        <label for="patient-name">Name</label>
+        <input id="patient-name" class="form-control" type="text" name="name">
+        <label for="patient-family">Family</label>
+        <input id="patient-family" class="form-control" type="text" name="family">
+        <label for="patient-datetime">Datetime</label>
+        <input id="patient-datetime" class="form-control" type="datetime-local" name="datetime">
+        <button id="patient-save-btn" class="btn btn-success" type="submit">Save <i class="fa fa-save"></i></button>
+    </form>
+
+    <div id="patient-table-div">
+        <h3>Patient List</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Family</th>
+                    <th>Datetime</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ patient.id }}</td>
+                    <td>{{ patient.name }}</td>
+                    <td>{{ patient.family }}</td>
+                    <td>{{ patient.datetime }}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="editPatient({{ patient.id }})">Edit <i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger" onclick="removePatient({{ patient.id }})">Remove <i class="fa fa-remove"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Doctor Profile</h2>
+    <form id="doctor-form" action="/doctor" method="post" class="form-group">
+        <label for="doctor-name">Name</label>
+        <input id="doctor-name" class="form-control" type="text" name="name">
+        <label for="doctor-specialty">skill</label>
+        <input id="doctor-specialty" class="form-control" type="text" name="specialty">
+        <label for="doctor-datetime">Datetime</label>
+        <input id="doctor-datetime" class="form-control" type="datetime-local" name="datetime">
+        <button id="doctor-save-btn" class="btn btn-success" type="submit">Save <i class="fa fa-save"></i></button>
+    </form>
+
+    <div id="doctor-table-div">
+        <h3>Doctor List</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>skill</th>
+                    <th>Datetime</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ doctor.id }}</td>
+                    <td>{{ doctor.name }}</td>
+                    <td>{{ doctor.skill }}</td>
+                    <td>{{ doctor.datetime }}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="editDoctor({{ doctor.id }})">Edit <i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger" onclick="removeDoctor({{ doctor.id }})">Remove <i class="fa fa-remove"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/font-awesome.js') }}"></script>
+<script>
+function editPatient(id) {
+    // Function to edit patient details
+    const patients = {{ person_list|tojson }};
+    const patientData = patients.find(p => p.id === id);
+    if (patientData) {
+        document.getElementById('patient-form').action = '/person?_method=PUT';
+        document.getElementById('patient-name').value = patientData.name;
+        document.getElementById('patient-family').value = patientData.family;
+        document.getElementById('patient-datetime').value = new Date(patientData.datetime).toISOString().slice(0,16);
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+          hiddenInput.name = 'id';
+        hiddenInput.value = doctorData.id;
+        document.getElementById('doctor-form').appendChild(hiddenInput);
+    }
+}
+
+function removeDoctor(id) {
+    if (confirm("Are you sure you want to delete this doctor?")) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("DELETE", `/doctor?id=${id}`, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                location.reload();
+            } else {
+                alert("Failed to delete doctor");
+            }
+        };
+        xhr.send();
+    }
+}
+</script>
+</body>
+</html>

@@ -20,13 +20,14 @@ class MedicalReport(Base):
         self.description = description
 
     # todo : getter / setter (validation)
-    def get_description(self):
-        return self.description
 
-    def set_description(self, description):
-        if isinstance(description, str) and description.lower() in ("income", "outcome"):
-            self.medica_report = description.lower()
-        elif isinstance(description, int) and description in (1, -1):
-            self.description = "income" if description == 1 else "outcome"
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        if isinstance(value, str) and 1 <= len(value) <= 30:
+            self._description = value
         else:
-            raise ValueError("invalid:transaction_type")
+            raise ValueError("Description must be a string with 1 to 30 characters")
